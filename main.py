@@ -13,116 +13,116 @@ from write_a_book_with_flows.types import Chapter, ChapterOutline
 from write_a_book_with_flows.crews.outline_book_crew.outline_crew import OutlineCrew
 
 
-class BookState(BaseModel):
+class LivroEstado(BaseModel):
     id: str = "1"
-    title: str = "The Current State of AI in September 2024"
-    book: List[Chapter] = []
-    book_outline: List[ChapterOutline] = []
-    topic: str = (
-        "Exploring the latest trends in AI across different industries as of September 2024"
+    titulo: str = "A Lenda da Espada Encantada"
+    livro: List[Chapter] = []
+    esboco_livro: List[ChapterOutline] = []
+    topico: str = (
+        "Uma jornada épica em um reino mágico para encontrar uma espada lendária e derrotar um antigo mal."
     )
-    goal: str = """
-        The goal of this book is to provide a comprehensive overview of the current state of artificial intelligence in September 2024.
-        It will delve into the latest trends impacting various industries, analyze significant advancements,
-        and discuss potential future developments. The book aims to inform readers about cutting-edge AI technologies
-        and prepare them for upcoming innovations in the field.
+    objetivo: str = """
+        O objetivo deste livro é transportar o leitor para um mundo de fantasia rico em detalhes,
+        com personagens cativantes, magia ancestral e batalhas emocionantes. A narrativa deve
+        explorar temas de coragem, amizade e o eterno conflito entre o bem e o mal, culminando
+        em um confronto final épico.
     """
 
 
-class BookFlow(Flow[BookState]):
-    initial_state = BookState
+class FluxoLivro(Flow[LivroEstado]):
+    initial_state = LivroEstado
 
     @start()
-    def generate_book_outline(self):
-        print("Kickoff the Book Outline Crew")
+    def gerar_esboco_livro(self):
+        print("Iniciando a Equipe de Esboço do Livro")
         output = (
             OutlineCrew()
             .crew()
-            .kickoff(inputs={"topic": self.state.topic, "goal": self.state.goal})
+            .kickoff(inputs={"topic": self.state.topico, "goal": self.state.objetivo})
         )
 
-        chapters = output["chapters"]
-        print("Chapters:", chapters)
+        capitulos = output["chapters"]
+        print("Capítulos:", capitulos)
 
-        self.state.book_outline = chapters
-        return chapters
+        self.state.esboco_livro = capitulos
+        return capitulos
 
-    @listen(generate_book_outline)
-    async def write_chapters(self):
-        print("Writing Book Chapters")
-        tasks = []
+    @listen(gerar_esboco_livro)
+    async def escrever_capitulos(self):
+        print("Escrevendo os Capítulos do Livro")
+        tarefas = []
 
-        async def write_single_chapter(chapter_outline):
+        async def escrever_capitulo_unico(esboco_capitulo):
             output = (
                 WriteBookChapterCrew()
                 .crew()
                 .kickoff(
                     inputs={
-                        "goal": self.state.goal,
-                        "topic": self.state.topic,
-                        "chapter_title": chapter_outline.title,
-                        "chapter_description": chapter_outline.description,
+                        "goal": self.state.objetivo,
+                        "topic": self.state.topico,
+                        "chapter_title": esboco_capitulo.title,
+                        "chapter_description": esboco_capitulo.description,
                         "book_outline": [
-                            chapter_outline.model_dump_json()
-                            for chapter_outline in self.state.book_outline
+                            esboco_capitulo.model_dump_json()
+                            for esboco_capitulo in self.state.esboco_livro
                         ],
                     }
                 )
             )
-            title = output["title"]
-            content = output["content"]
-            chapter = Chapter(title=title, content=content)
-            return chapter
+            titulo = output["title"]
+            conteudo = output["content"]
+            capitulo = Chapter(title=titulo, content=conteudo)
+            return capitulo
 
-        for chapter_outline in self.state.book_outline:
-            print(f"Writing Chapter: {chapter_outline.title}")
-            print(f"Description: {chapter_outline.description}")
-            # Schedule each chapter writing task
-            task = asyncio.create_task(write_single_chapter(chapter_outline))
-            tasks.append(task)
+        for esboco_capitulo in self.state.esboco_livro:
+            print(f"Escrevendo Capítulo: {esboco_capitulo.title}")
+            print(f"Descrição: {esboco_capitulo.description}")
+            # Agendar cada tarefa de escrita de capítulo
+            tarefa = asyncio.create_task(escrever_capitulo_unico(esboco_capitulo))
+            tarefas.append(tarefa)
 
-        # Await all chapter writing tasks concurrently
-        chapters = await asyncio.gather(*tasks)
-        print("Newly generated chapters:", chapters)
-        self.state.book.extend(chapters)
+        # Aguardar todas as tarefas de escrita de capítulo concorrentemente
+        capitulos = await asyncio.gather(*tarefas)
+        print("Capítulos recém-gerados:", capitulos)
+        self.state.livro.extend(capitulos)
 
-        print("Book Chapters", self.state.book)
+        print("Capítulos do Livro", self.state.livro)
 
-    @listen(write_chapters)
-    async def join_and_save_chapter(self):
-        print("Joining and Saving Book Chapters")
-        # Combine all chapters into a single markdown string
-        book_content = ""
+    @listen(escrever_capitulos)
+    async def juntar_e_salvar_capitulo(self):
+        print("Juntando e Salvando os Capítulos do Livro")
+        # Combinar todos os capítulos em uma única string markdown
+        conteudo_livro = ""
 
-        for chapter in self.state.book:
-            # Add the chapter title as an H1 heading
-            book_content += f"# {chapter.title}\n\n"
-            # Add the chapter content
-            book_content += f"{chapter.content}\n\n"
+        for capitulo in self.state.livro:
+            # Adicionar o título do capítulo como um cabeçalho H1
+            conteudo_livro += f"# {capitulo.title}\n\n"
+            # Adicionar o conteúdo do capítulo
+            conteudo_livro += f"{capitulo.content}\n\n"
 
-        # The title of the book from self.state.title
-        book_title = self.state.title
+        # O título do livro de self.state.titulo
+        titulo_livro = self.state.titulo
 
-        # Create the filename by replacing spaces with underscores and adding .md extension
-        filename = f"./{book_title.replace(' ', '_')}.md"
+        # Criar o nome do arquivo substituindo espaços por underscores e adicionando a extensão .md
+        nome_arquivo = f"./{titulo_livro.replace(' ', '_')}.md"
 
-        # Save the combined content into the file
-        with open(filename, "w", encoding="utf-8") as file:
-            file.write(book_content)
+        # Salvar o conteúdo combinado no arquivo
+        with open(nome_arquivo, "w", encoding="utf-8") as file:
+            file.write(conteudo_livro)
 
-        print(f"Book saved as {filename}")
-        return book_content
-
-
-def kickoff():
-    poem_flow = BookFlow()
-    poem_flow.kickoff()
+        print(f"Livro salvo como {nome_arquivo}")
+        return conteudo_livro
 
 
-def plot():
-    poem_flow = BookFlow()
-    poem_flow.plot()
+def iniciar():
+    fluxo_livro = FluxoLivro()
+    fluxo_livro.kickoff()
+
+
+def plotar():
+    fluxo_livro = FluxoLivro()
+    fluxo_livro.plot()
 
 
 if __name__ == "__main__":
-    kickoff()
+    iniciar()
