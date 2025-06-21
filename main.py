@@ -15,17 +15,25 @@ from write_a_book_with_flows.crews.outline_book_crew.outline_crew import Outline
 
 class LivroEstado(BaseModel):
     id: str = "1"
-    titulo: str = "A Lenda da Espada Encantada"
+    titulo: str = "Paulo: O Despertar do Filho da Magia"
     livro: List[Chapter] = []
     esboco_livro: List[ChapterOutline] = []
     topico: str = (
-        "Uma jornada épica em um reino mágico para encontrar uma espada lendária e derrotar um antigo mal."
+        "Paulo, um rapaz de 20 anos, nascido em São Paulo e deficiente visual desde o nascimento, vive com sua mãe, Margarida, "
+        "que é empregada doméstica na casa da família Montenegro. Apesar da compreensão e ajuda dos patrões de sua mãe, Paulo enfrenta o desprezo de Juliana, "
+        "a filha do casal, dois anos mais nova. Margarida se entristece com o tratamento dado a Paulo. Paulo sempre teve sonhos vívidos com magos, fadas, "
+        "duendes e gnomos, sobre os quais sua mãe evita falar. O pai de Paulo desapareceu misteriosamente antes de seu nascimento. "
+        "Em uma noite, um ser de pura luz aparece em seu sonho, revelando: 'Em breve, filho da magia, você despertará'."
     )
     objetivo: str = """
-        O objetivo deste livro é transportar o leitor para um mundo de fantasia rico em detalhes,
-        com personagens cativantes, magia ancestral e batalhas emocionantes. A narrativa deve
-        explorar temas de coragem, amizade e o eterno conflito entre o bem e o mal, culminando
-        em um confronto final épico.
+        Este livro narrará a jornada de Paulo, desde sua vida cotidiana e os desafios de sua deficiência visual, até o despertar de seus poderes mágicos latentes.
+        A história explorará o desenvolvimento de suas habilidades, a mudança em sua relação com Juliana após eventos impactantes (como salvá-la de um perigo iminente,
+        revelando seus poderes), e a busca pela verdade sobre o desaparecimento de seu pai e sua conexão com o mundo da magia.
+        A trama envolverá profecias antigas ('Em breve, o filho da magia irá despertar. fiquem de olho'), confrontos inesperados (Paulo usando seus poderes instintivamente para proteger Juliana:
+        'Juliana! não! paulo entrou na frente dela quando o bandido atirou. Paulo instintivamente estendeu a mão e um raio atingiu o atirador, transformando-o em cinzas.'),
+        reflexões e mudanças de perspectiva ('Paulo salvou a minha vida... porque, se eu sempre fui ruim com ele? o que está acontecendo?'),
+        e possíveis manipulações ou segredos guardados ('...algumas memórias precisam ser alteradas - disse o estranho...').
+        O objetivo é criar uma narrativa envolvente sobre autodescoberta, aceitação, o poder do inesperado e o desvendar de um destino mágico.
     """
 
 
