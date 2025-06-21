@@ -5,12 +5,11 @@ from typing import List
 from crewai.flow.flow import Flow, listen, start
 from pydantic import BaseModel
 
-from write_a_book_with_flows.crews.write_book_chapter_crew.write_book_chapter_crew import (
+from crews.write_book_chapter_crew.write_book_chapter_crew import (
     WriteBookChapterCrew,
 )
-from write_a_book_with_flows.types import Chapter, ChapterOutline
-
-from write_a_book_with_flows.crews.outline_book_crew.outline_crew import OutlineCrew
+from project_types import Chapter, ChapterOutline
+from crews.outline_book_crew.outline_crew import OutlineCrew
 
 
 class LivroEstado(BaseModel):

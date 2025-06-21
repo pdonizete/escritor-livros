@@ -3,7 +3,7 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
 from langchain_openai import ChatOpenAI
 
-from write_a_book_with_flows.types import BookOutline
+from project_types import BookOutline
 
 
 @CrewBase
